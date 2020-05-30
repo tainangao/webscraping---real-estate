@@ -14,11 +14,12 @@ class ResidentialPeopleSpider(scrapy.Spider):
         page_nums[0] = ''
 
         sale_url = 'https://www.residentialpeople.com/za/property-for-sale/cape-town/?limit=10&offset={code}0&latitude=-33.9248685&longitude=18.4240553&radius=53.45541417432696&_location=Cape%20Town,%20South%20Africa&_radius_expansion=0.402'
-        for code in page_nums[0:2]:
+        for code in page_nums:
             yield scrapy.Request(sale_url.format(code=code))
 
+        # Only scrape one page for now, since most listings lack floor_size data
         rent_url = 'https://www.residentialpeople.com/za/property-for-rent/cape-town/?limit=10&offset={code}0&latitude=-33.9248685&longitude=18.4240553&radius=53.45541417432696&_location=Cape%20Town,%20South%20Africa&_radius_expansion=0.402'
-        for code in page_nums[0:2]:
+        for code in page_nums[0]:
             yield scrapy.Request(rent_url.format(code=code))
 
 
@@ -49,8 +50,7 @@ class ResidentialPeopleSpider(scrapy.Spider):
             'longitude': response.css('script').re_first(r'"longitude":([\-\d.]+)'),
             'floor_size': floor_size,
             'property_type': property_type,
-            'url': response._get_url(),
-            'images': response.xpath('//*[@class="image-gallery-slide"]/div/img/@src').extract()
+            'url': response._get_url()
         }
 
         for key, val in data.items():
