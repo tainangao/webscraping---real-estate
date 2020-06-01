@@ -3,7 +3,7 @@
 
 - **residential_people**: Scrapy spider folder
     - spiders/rp.py: the spider
-    - base/**base_residential_people.py**: the base spider. Here's the _ham_**!
+    - base/**base_residential_people.py**: the base spider. Here's the **_ham_**!
 - **CapeTown.ipynb**: Jupyter Notebook
 - **rp.csv**: the data crawled
 
