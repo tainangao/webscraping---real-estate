@@ -22,4 +22,4 @@ The spider goes to [Residential People](https://www.residentialpeople.com/za/) a
 - url: url of the listing
 
 Scraped Data (each point indicates one property. The warmer the color, the higher the price): 
-![Capt_Town_Map](https://github.com/tainangao/webscraping---real-estate/blob/master/cape_town_map.pdf "Scraped Cape Town Apartments")
+![Capt_Town_Map](https://github.com/tainangao/webscraping---real-estate/blob/master/cape_town_map.png "Scraped Cape Town Apartments")
