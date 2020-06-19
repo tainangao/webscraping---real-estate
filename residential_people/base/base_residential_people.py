@@ -28,6 +28,7 @@ class ResidentialPeopleSpider(scrapy.Spider):
         bedrooms = response.xpath('//*[@class="property-details-description-tag property-details__rooms"]/text()').getall()[0]
         bathrooms = response.xpath('//*[@class="property-details-description-tag property-details__rooms"]/text()').getall()[1]
         property_type = response.css('div.property-details-description__tags span::text').getall()[-1]
+        description = response.xpath('//*[@id="tab-group-pane-1"]/div/div[2]/div/div/div/p/text()').extract_first()
 
         floor_size = response.xpath('//*[@class="property-details-header-size"]/span[2]/text()').extract_first()
         if floor_size:
@@ -41,6 +42,7 @@ class ResidentialPeopleSpider(scrapy.Spider):
 
 
         data = {
+            'agency': self.name,
             'title': title,
             'offering': 'buy' if 'rent' not in response.css('h1::text').get() else 'rent',
             'price': ''.join(response.xpath('//*[@class="property-details-header-price"]/div/text()').re(r'\d+')),
@@ -50,7 +52,15 @@ class ResidentialPeopleSpider(scrapy.Spider):
             'longitude': response.css('script').re_first(r'"longitude":([\-\d.]+)'),
             'floor_size': floor_size,
             'property_type': property_type,
-            'url': response._get_url()
+            'url': response._get_url(),
+            'images': response.xpath('//*[@class="image-gallery-slide"]/div/img/@src').extract(),
+            'description': description,
+            'external_id': response.xpath('//*[@class="property-details-sidebar-agent__reference"]/span/text()').extract_first(),
+            'listing_date': response.xpath('//*[@class="property-details-footer-field__value"]//text()').extract_first(),
+            'contact_name': response.xpath('//*[@class="property-details-sidebar-agent__staff-name"]/text()').get(),
+            'contact_num': response.css('script').re_first(r'phoneNumber":"(\d{3} \d{3} \d{4})"'),
+            'contact_email': response.css('script').re_first(r'"emailAddress":"(.+@[\w\-\.]+)'),
+
         }
 
         for key, val in data.items():
